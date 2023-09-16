@@ -1,11 +1,17 @@
-import http from 'http';
+import dotenv from 'dotenv';
+import express from 'express';
+import router from './routes/index.js';
 
-const server = http.createServer((req, res) => {
-    const param = req.url.split("/")[1]
-    res.setHeader("Content-Type", "text/plain")
-    res.end(`Hello ${param}`)
-})
+dotenv.config();
 
-server.listen(3000, () => {
-    console.log("Server is running on port 3000\n http://localhost:3000")
+const app = express()
+
+app.use(express.json())
+
+app.use('/api', router);
+
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+    console.log('Example app listening on port ' + port + '! ')
 })
