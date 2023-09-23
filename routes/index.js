@@ -11,7 +11,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 router.put('/register', async (req, res) => {
     try {
-        const { email, password, name } = req.body
+        const { email, password, name = "aman" } = req.body
         if (!email || !password || !name) 
             throw { code: 400, message: 'Missing required fields: username, password or name' }
 
