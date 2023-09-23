@@ -7,6 +7,20 @@ dotenv.config()
 
 const app = express()
 
+// express static serve from /dist react app
+app.use(express.static('dist'))
+
+// cross origin
+app.use((req, res, next) => {
+    // if request type is options preflight
+    if (req.method === 'OPTIONS') {
+        res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
+    }
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Authorization, Accept')
+    next()
+})
+
 app.use(express.json())
 
 app.use(expressjwt({
@@ -21,7 +35,7 @@ app.use(expressjwt({
         return null
     },
     onExpired: (req, res) => res.status(401).json({ message: 'Token expired' }),
-}).unless({ path: ['/api/login', '/api/register'] }))
+}).unless({ path: ['/api/login', '/api/register', '/', '/index.html'] }))
 
 app.use('/api', router)
 
