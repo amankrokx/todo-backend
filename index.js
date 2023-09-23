@@ -35,13 +35,13 @@ app.use(
             return null
         },
         onExpired: (req, res) => res.status(401).json({ message: "Token expired" }),
-    }).unless({ path: ["/api/login", "/api/register", "/assets/index-89cf2104.js", "/assets/index-e224638a.css", "/index.html", "/assets/tower-d6350dd2.png"] })
+    }).unless({ path: ["/", "/api/login", "/api/register", "/assets/index-89cf2104.js", "/assets/index-e224638a.css", "/index.html", "/assets/tower-d6350dd2.png"] })
 )
 
 app.use('/api', router)
 
 // express static serve from /dist react app
-app.use(express.static('dist'))
+app.use('/', express.static('dist'))
 
 const port = parseInt(process.env.PORT) || 8080;
 
