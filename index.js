@@ -7,8 +7,7 @@ dotenv.config()
 
 const app = express()
 
-// express static serve from /dist react app
-app.use(express.static('dist'))
+
 
 // cross origin
 app.use((req, res, next) => {
@@ -23,21 +22,26 @@ app.use((req, res, next) => {
 
 app.use(express.json())
 
-app.use(expressjwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ['HS256'],
-    credentialsRequired: true,
-    getToken: (req) => {
-        if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
-            return req.headers.authorization.split(' ')[1]
-        else if (req.query && req.query.token)
-            return req.query.token
-        return null
-    },
-    onExpired: (req, res) => res.status(401).json({ message: 'Token expired' }),
-}).unless({ path: ['/api/login', '/api/register', '/', '/index.html'] }))
+
+
+app.use(
+    expressjwt({
+        secret: process.env.JWT_SECRET,
+        algorithms: ["HS256"],
+        credentialsRequired: true,
+        getToken: req => {
+            if (req.headers.authorization && req.headers.authorization.split(" ")[0] === "Bearer") return req.headers.authorization.split(" ")[1]
+            else if (req.query && req.query.token) return req.query.token
+            return null
+        },
+        onExpired: (req, res) => res.status(401).json({ message: "Token expired" }),
+    }).unless({ path: ["/api/login", "/api/register", "/assets/index-89cf2104.js", "/assets/index-e224638a.css", "/index.html", "/assets/tower-d6350dd2.png"] })
+)
 
 app.use('/api', router)
+
+// express static serve from /dist react app
+app.use(express.static('dist'))
 
 const port = parseInt(process.env.PORT) || 8080;
 
